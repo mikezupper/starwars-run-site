@@ -1,23 +1,23 @@
-import { PEOPLE, FETCH_PEOPLE, setPeople } from "../../actions/people.js";
+import { SPECIES, FETCH_SPECIES, setSpecies } from "../../actions/species.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
-const PEOPLE_URL = "https://api.starwars.run/api/people/?search=";
+const SPECIES_URL = "https://api.starwars.run/api/species/?search=";
 
-export const peopleMiddleware = () => (next) => (action) => {
+export const speciesMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
-    case FETCH_PEOPLE:
+    case FETCH_SPECIES:
       next([
         apiRequest({
           body: null,
           method: "GET",
-          url: PEOPLE_URL + action?.payload?.data,
-          feature: PEOPLE,
+          url: SPECIES_URL + action?.payload?.data,
+          feature: SPECIES,
         }),
       ]);
       break;
 
-    case `${PEOPLE} ${API_SUCCESS}`:
-      next([setPeople({ people: action.payload.results })]);
+    case `${SPECIES} ${API_SUCCESS}`:
+      next([setSpecies({ species: action.payload.results })]);
       break;
 
     // case `${PEOPLE} ${API_ERROR}`:

@@ -9,11 +9,9 @@ export const apiMiddleware =
     if (action.type.includes(API_REQUEST)) {
       const { body, url, method, feature } = action.meta;
       const { context } = action;
-      console.log("acx = ", action);
       fetch(url, { body, method })
         .then((response) => response.json())
         .then((response) => {
-          console.log("api fetch - adding context", context, feature);
           dispatch(apiSuccess({ response, feature, context }));
         })
         .catch((error) => dispatch(apiError({ error: error, feature })));

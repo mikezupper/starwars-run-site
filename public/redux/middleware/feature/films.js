@@ -1,23 +1,27 @@
-import { PEOPLE, FETCH_PEOPLE, setPeople } from "../../actions/people.js";
+import {
+  FILMS,
+  FETCH_FILMS,
+  setFilms,
+} from "../../actions/films.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
-const PEOPLE_URL = "https://api.starwars.run/api/people/?search=";
 
-export const peopleMiddleware = () => (next) => (action) => {
+const FILMS_URL = "https://api.starwars.run/api/films/?search=";
+export const filmsMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
-    case FETCH_PEOPLE:
+    case FETCH_FILMS:
       next([
         apiRequest({
           body: null,
           method: "GET",
-          url: PEOPLE_URL + action?.payload?.data,
-          feature: PEOPLE,
+          url: FILMS_URL + action?.payload?.data,
+          feature: FILMS,
         }),
       ]);
       break;
 
-    case `${PEOPLE} ${API_SUCCESS}`:
-      next([setPeople({ people: action.payload.results })]);
+    case `${FILMS} ${API_SUCCESS}`:
+      next([setFilms({ films: action.payload.results })]);
       break;
 
     // case `${PEOPLE} ${API_ERROR}`:

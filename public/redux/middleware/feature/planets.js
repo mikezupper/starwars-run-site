@@ -1,23 +1,23 @@
-import { PEOPLE, FETCH_PEOPLE, setPeople } from "../../actions/people.js";
+import { PLANETS, FETCH_PLANETS, setPlanets } from "../../actions/planets.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
-const PEOPLE_URL = "https://api.starwars.run/api/people/?search=";
+const PLANETS_URL = "https://api.starwars.run/api/planets/?search=";
 
-export const peopleMiddleware = () => (next) => (action) => {
+export const planetsMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
-    case FETCH_PEOPLE:
+    case FETCH_PLANETS:
       next([
         apiRequest({
           body: null,
           method: "GET",
-          url: PEOPLE_URL + action?.payload?.data,
-          feature: PEOPLE,
+          url: PLANETS_URL + action?.payload?.data,
+          feature: PLANETS,
         }),
       ]);
       break;
 
-    case `${PEOPLE} ${API_SUCCESS}`:
-      next([setPeople({ people: action.payload.results })]);
+    case `${PLANETS} ${API_SUCCESS}`:
+      next([setPlanets({ planets: action.payload.results })]);
       break;
 
     // case `${PEOPLE} ${API_ERROR}`:

@@ -6,10 +6,14 @@ import {
   setSearchResults,
 } from "../../actions/search.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
-import { VEHICLE } from "../../actions/vehicles.js";
+import { VEHICLES } from "../../actions/vehicles.js";
 import { PEOPLE } from "../../actions/people.js";
+import { FILMS } from "../../actions/films.js";
+import { STARSHIPS } from "../../actions/starships.js";
+import { PLANETS } from "../../actions/planets.js";
+import { SPECIES } from "../../actions/species.js";
 
-const entity_types = [VEHICLE, PEOPLE];
+const entity_types = [VEHICLES, PEOPLE, FILMS, STARSHIPS, PLANETS, SPECIES];
 
 export const searchMiddleware = () => (next) => (action) => {
   next(action);
@@ -23,8 +27,12 @@ export const searchMiddleware = () => (next) => (action) => {
           apiRequest({
             body: null,
             method: "GET",
-            url: "https://swapi.dev/api/" + entity + "/?search=" + searchTerm,
-            feature: SEARCH,
+            url:
+              "https://api.starwars.run/api/" +
+              entity +
+              "/?search=" +
+              searchTerm,
+            feature: entity,
             context: {
               entity,
               searchTerm,
@@ -36,8 +44,6 @@ export const searchMiddleware = () => (next) => (action) => {
       break;
 
     case `${SEARCH} ${API_SUCCESS}`:
-      console.log("succee!!!!", action);
-
       next([setSearchResults({ search: action.payload })]);
       break;
 
