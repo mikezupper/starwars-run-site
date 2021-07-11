@@ -6,52 +6,41 @@ import {
   setSearchResults,
 } from "../../actions/search.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
-import { VEHICLES } from "../../actions/vehicles.js";
-import { PEOPLE } from "../../actions/people.js";
-import { FILMS } from "../../actions/films.js";
-import { STARSHIPS } from "../../actions/starships.js";
-import { PLANETS } from "../../actions/planets.js";
-import { SPECIES } from "../../actions/species.js";
-
-const entity_types = [VEHICLES, PEOPLE, FILMS, STARSHIPS, PLANETS, SPECIES];
 
 export const searchMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
     case FETCH_SEARCH_RESULTS:
-      let searchTerm = action?.payload?.data;
+      let { searchTerm, entity } = action?.payload;
+      //TODO: need to externalize some prpoerites
+      let url = new URL(`https://api.starwars.run/api/${entity}/`);
+      url.searchParams.set("search", searchTerm);
 
-      let actions = new Array();
-      entity_types.forEach((entity) =>
-        actions.push(
-          apiRequest({
-            body: null,
-            method: "GET",
-            url:
-              "https://api.starwars.run/api/" +
-              entity +
-              "/?search=" +
-              searchTerm,
-            feature: entity,
-            context: {
-              entity,
-              searchTerm,
-            },
-          })
-        )
-      );
-      next([...actions]);
+      next([
+        apiRequest({
+          method: "GET",
+          url,
+          feature: SEARCH,
+          context: {
+            entity,
+            searchTerm,
+          },
+        }),
+      ]);
       break;
 
     case `${SEARCH} ${API_SUCCESS}`:
-      next([setSearchResults({ search: action.payload })]);
+      next([
+        setSearchResults({ search: action.payload, context: action.context }),
+      ]);
       break;
 
-    // case `${SEARCH} ${API_ERROR}`:
-    //   next([
-    //     setNotification({ message: action.payload.message, feature: SEARCH }),
-    //     setLoader({ state: false, feature: SEARCH }),
-    //   ]);
-    //   break;
+    case `${SEARCH} ${API_ERROR}`:
+      // console.log("search erorr",action);
+      // next([
+      //   setNotification({ message: action.payload.message, feature: SEARCH }),
+      //   setLoader({ state: false, feature: SEARCH }),
+      // ]);
+      break;
   }
 };

@@ -1,7 +1,7 @@
 import { fetchEntity, setEntity } from "./entity.js";
 
 // feature name
-export const FILMS = "FILMS";
+export const FILMS = "films";
 
 // action types
 export const FETCH_FILMS = `${FILMS} FETCH`;
@@ -14,3 +14,6 @@ export const fetchFilms = ({ query }) => fetchEntity({ query, type: FILMS });
 
 export const setFilms = ({ films }) =>
   setEntity({ payload: films, type: SET_FILMS, feature: FILMS });
+  
+  export const publishFilms = ({ films }) =>
+  setEntity({ payload: films, type: FILMS_PUBLISHED, feature: FILMS });

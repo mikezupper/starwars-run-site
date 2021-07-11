@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Star Wars Run - Starships</title>
+  <meta name="theme-color" content="#4285f4">
+  <link rel="apple-touch-icon" href="/icons/my-icon-512x512.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="description"
+    content="Explore all the starwars lore. Luke Skywalker, Darth Vader, Palpatine, Clone Wars, Force Awakens, Return of The Jedi">
+  <script defer src="/scripts/rxjs.umd.js"></script>
+  <script defer src="/sw-startup.js"></script>
+  <script defer src="/components/Film.js"></script>
+  <script type="module" src="/components/Header.js"></script>
+  <script type="module" src="/components/Nav.js"></script>
+</head>
+
+<body>
+  <main>
+    <my-header></my-header>
+    <input class="input" id="search-input" type="text" placeholder="Search for a Starship" data-entity="starships">
+    <my-nav></my-nav>
+    <div id="list-result"></div>
+  </main>
+</body>
+
+<script type="module">
+  import { searchConfig } from '/boostrap/SearchConfig.js';
+  import { html, render } from '/scripts/htm.standalone.module.js';
+  import { SearchResultsHeader } from '/components/SearchResultsHeader.js';
+  const name = "starships-search";
+  const channel = new BroadcastChannel(name);
+  channel.onmessage = (e) => {
+    const payload = e?.data;
+    render(html`<${SearchResultsHeader} payload="${payload}"/>`, document.getElementById("list-result"));
+  };
+  searchConfig(name, "na", document.getElementById("search-input"));
+</script>
+<script src="/__/firebase/8.7.1/firebase-app.js"></script>
+<script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
+<script src="/__/firebase/8.7.1/firebase-performance.js"></script>
+<script src="/__/firebase/init.js?useEmulator=true"></script>
+<script>
+  firebase.analytics();
+  firebase.performance();
+</script>
+
+</html>

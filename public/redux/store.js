@@ -51,7 +51,7 @@ const featureMiddleware = [
 const coreMiddleware = [
   actionSplitterMiddleware,
   apiMiddleware,
-  loggerMiddleware,
+  // loggerMiddleware,
 ];
 
 // compose the middleware with additional (optional) enhancers,

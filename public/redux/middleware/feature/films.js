@@ -2,6 +2,7 @@ import {
   FILMS,
   FETCH_FILMS,
   setFilms,
+  publishFilms,
 } from "../../actions/films.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
 
@@ -21,7 +22,8 @@ export const filmsMiddleware = () => (next) => (action) => {
       break;
 
     case `${FILMS} ${API_SUCCESS}`:
-      next([setFilms({ films: action.payload.results })]);
+      const films = action.payload.results;
+      next([setFilms({ films }), publishFilms({ films })]);
       break;
 
     // case `${PEOPLE} ${API_ERROR}`:

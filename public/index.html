@@ -6,149 +6,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Star Wars Run</title>
 
-  <meta name="description"
-    content="Explore all the starwars lore. Luke Skywalker, Darth Vader, Palpatine, Clone Wars, Force Awakens, Return of The Jedi">
-  <script defer src="/__/firebase/8.6.4/firebase-app.js"></script>
-  <script defer src="/__/firebase/8.6.4/firebase-analytics.js"></script>
-  <script defer src="/__/firebase/8.6.4/firebase-performance.js"></script>
-  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"
-    integrity="sha512-0/2ebe9lI6BcinFBXFjbBkquDfccT2wP+E48pecciFuGMXPRNdInXZawHiM2NUUVJ4/aKAzyebbvh+CkvRhwTA=="
-    crossorigin="anonymous"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.js"
-    integrity="sha512-c7SfJeKRl8g7wgL+zMGX78faYVGp+NZVQ587mRLrqeLySX/qHCQOKw/iZ5Pp64DaPjvedixWC/Fe73upnhBaRA=="
-    crossorigin="anonymous"></script>
-  <script id="card-list-template" type="text/x-handlebars-template">
-    <div class="container">
-      <div>
-        <div class="notification">
-          <nav class="pagination" role="navigation" aria-label="pagination">
-            {{#if payload.prev }}<a class="pagination-previous">Previous</a>{{/if}}
-            <span>Total Count: {{ payload.count }}</span>
-            {{#if payload.next }}<a class="pagination-next">Next</a>{{/if}}
-          </nav>
-        </div>
-      </div>
-    {{#each payload.results}}
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          {{name}}
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="content">
-            <table>
-              <th>Birth Year</th>
-              <th>Eye Color</th>
-              <th>Hair Color</th>
-              <th>Skin color</th>
-              <th>Gender</th>
-              <tr>
-                <td>{{birth_year}}</td>
-                <td>{{eye_color}}</td>
-                <td>{{hair_color}}</td>
-                <td>{{skin_color}}</td>
-                <td>{{gender}}</td>
-              </tr>
-            </table>
-      </div>
-    </div>
-    {{/each}}
-    </div>   
+  <meta name="theme-color" content="#4285f4">
+  <link rel="apple-touch-icon" href="/icons/my-icon-512x512.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="description" content="Explore all the starwars lore. Luke Skywalker, Darth Vader, Palpatine, Clone Wars, Force Awakens, Return of The Jedi
+    Web Development View Source Web Workers Redux Off the Main Thread No Build Tools">
+  <script defer src="/sw-startup.js"></script>
+  <script type="module" src="/components/Header.js"></script>
+  <script type="module" src="/components/Nav.js"></script>
+  <script type="application/ld+json">
+    {
+    "@context": "http://www.schema.org",
+    "@type": "Person",
+    "@id": "https://mikezupper.com/#person",
+    "name": "Mike Zupper",
+    "alternateName": "Mike Zupper",
+    "nationality": "American",
+    "gender": "Male",
+    "Description": "Technologist, Problem Solver, Tinker, and Wannabe Golfer",
+    ,
+    "url": "https://mikezupper.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Allentown",
+      "addressRegion": "PA",
+      "addressCountry": "United States Of America"
+    },
+    "sameAs": [
+      "https://twitter.com/mikezupper",
+      "https://github.com/mikezupper"
+      ]
+    }
   </script>
 </head>
 
 <body>
   <main>
-    <nav role="navigation" aria-label="main navigation">
-      <a class="navbar-item" href="/about.html">About</a>
-      <input class="input mr-3" id="email-signup" type="emal" placeholder="your@emal.com">
-      <input type="button" value="Follow The Journey">
-    </nav>
-
-    <h1>
-      Star Wars Run - Explore the Star Wars lore!
-    </h1>
-    <input class="input" id="search-input" type="text" placeholder="Search for a Person">
-
-    <ul>
-      <li>
-        <!-- Active Link  -->
-        <span>People</span>
-      </li>
-      <li>
-        <a href="/planets/index.html">
-          <span>Planets</span>
-        </a>
-      </li>
-      <li>
-        <a href="/films/index.html">
-          <span>Films</span>
-        </a>
-      </li>
-      <li>
-        <a href="/speices/index.html">
-          <span>Speices</span>
-        </a>
-      </li>
-      <li>
-        <a href="/starships/index.html">
-          <span>Starships</span>
-        </a>
-      </li>
-      <li>
-        <a href="/vehicles/index.html">
-          <span>Vehicles</span>
-        </a>
-      </li>
-    </ul>
-    </div>
-    </p>
-    </nav>
-    <div id="list-result"></div>
+    <my-header></my-header>
+    <my-nav></my-nav>
+    <h3>Welcome to Star Wars Run!</h3>
+    <p>Click any link to search for your favorite star wars lore.</p>
+    <p>If you are curious as to how this page was built, view the source!</p>
+    <p>No build tools used to generate this content.</p>
+    <p>Redux is running off main thread via Web Worker. No Proxies!</p>
+    <p>If you have questions, follow me on twitter @mikezupper</p>
   </main>
-</body>
-
-<script type="module">
-  const { tap, map, debounceTime, scan, filter, distinctUntilChanged } = rxjs.operators;
-  const { from } = rxjs;
-
-  //load the webworker (if enabled)
-  if (window.Worker) {
-    const reduxWorker = new Worker('worker.js', { type: "module" });
-    //send default search for Skywalker
-    reduxWorker.postMessage("Skywalker");
-
-    var userSearchInput$ = rxjs.fromEvent(document.getElementById("search-input"), "keyup")
-      .pipe(
-        map((e) => e.target.value),
-        debounceTime(750),
-        filter((text) => text.length > 1),
-        distinctUntilChanged()
-      );
-    //stream all text changes to  worker
-    userSearchInput$.subscribe((data) => {
-      reduxWorker.postMessage(data)
-    });
-
-    //script the HTML output
-    var theScript = document.getElementById('card-list-template');
-    var theTemplate = Handlebars.compile(theScript.innerHTML);
-
-    //once worker processes event, respond to output event
-    reduxWorker.onmessage = (e) => {
-      const { payload } = e?.data;
-      const { results } = payload;
-      const $search = from(results);
-      //TODO: need to find a better dom maninpulation
-      var output = document.getElementById("list-result");
-      output.innerHTML = theTemplate({ payload });
-    }
-
+  <script src="/__/firebase/8.7.1/firebase-app.js"></script>
+  <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
+  <script src="/__/firebase/8.7.1/firebase-performance.js"></script>
+  <script src="/__/firebase/init.js?useEmulator=true"></script>
+  <script>
     firebase.analytics();
     firebase.performance();
-  }
-</script>
+  </script>
+</body>
 
 </html>

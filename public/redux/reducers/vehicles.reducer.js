@@ -9,7 +9,6 @@ export const vehiclesReducer = (vehicles = initState, action) => {
     case VEHICLES_PUBLISHED:
       const msg = { type: VEHICLES_PUBLISHED, vehicles };
       postMessage(msg);
-      console.log("ping message to ", msg);
       return vehicles;
     default:
       return vehicles;

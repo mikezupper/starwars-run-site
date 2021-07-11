@@ -1,7 +1,7 @@
 import { fetchEntity, setEntity } from "./entity.js";
 
 // feature name
-export const PLANETS = "PLANETS";
+export const PLANETS = "planets";
 
 // action types
 export const FETCH_PLANETS = `${PLANETS} FETCH`;
