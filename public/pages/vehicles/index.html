@@ -31,12 +31,12 @@
   import { html, render } from '/scripts/htm.standalone.module.js';
   import { SearchResultsHeader } from '/components/SearchResultsHeader.js';
   const name = "vehicles-search";
-  const channel = new BroadcastChannel(name);
-  channel.onmessage = (e) => {
+  const channel = new MessageChannel(name);
+  channel.port1.onmessage = (e) => {
     const payload = e?.data;
     render(html`<${SearchResultsHeader} payload="${payload}"/>`, document.getElementById("list-result"));
   };
-  searchConfig(name, "at", document.getElementById("search-input"));
+  searchConfig(name, "at", document.getElementById("search-input"), channel.port2);
 </script>
 <script src="/__/firebase/8.7.1/firebase-app.js"></script>
 <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>

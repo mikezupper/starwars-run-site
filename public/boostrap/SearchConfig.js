@@ -2,8 +2,12 @@ const { tap, map, debounceTime, scan, filter, distinctUntilChanged } =
   rxjs.operators;
 const { from } = rxjs;
 
-export const searchConfig = (name, defaultSearchTerm, searchInputElement) => {
-  const channel = new BroadcastChannel(name);
+export const searchConfig = (
+  name,
+  defaultSearchTerm,
+  searchInputElement,
+  channelPort
+) => {
   //load the webworker (if enabled)
   if (window.Worker) {
     const reduxWorker = new Worker("/worker.js", { type: "module", name });
@@ -35,7 +39,8 @@ export const searchConfig = (name, defaultSearchTerm, searchInputElement) => {
     //once worker processes event, respond to output event
     reduxWorker.onmessage = (e) => {
       const { payload } = e?.data;
-      channel.postMessage(payload);
+      console.log("channelPort", channelPort);
+      channelPort.postMessage(payload);
     };
   }
 };

@@ -1,4 +1,4 @@
-const cacheName = "sw-cache-v6";
+const cacheName = "sw-cache-v7";
 
 // Cache all the files to make a PWA
 self.addEventListener("install", (e) => {
@@ -59,12 +59,13 @@ self.addEventListener("install", (e) => {
 // and check if we have cached the file
 // if so it will serve the cached file
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches
-      .open(cacheName)
-      .then((cache) => cache.match(event.request, { ignoreSearch: false }))
-      .then((response) => {
-        return response || fetch(event.request);
-      })
-  );
+  //console.log("sw fetch : ", event);
+  // event.respondWith(
+  //   caches
+  //     .open(cacheName)
+  //     .then((cache) => cache.match(event.request, { ignoreSearch: false }))
+  //     .then((response) => {
+  //       return response || fetch(event.request);
+  //     })
+  // );
 });
