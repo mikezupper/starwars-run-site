@@ -1,0 +1,19 @@
+// feature name
+export const SEARCH = "SEARCH";
+
+// action types
+export const FETCH_SEARCH_RESULTS = `${SEARCH} FETCH`;
+export const SET_SEARCH_RESULTS = `${SEARCH} SET`;
+
+// action creators
+export const fetchSearchResults = ({ searchTerm, entity }) => ({
+  type: FETCH_SEARCH_RESULTS,
+  payload: { searchTerm, entity },
+});
+
+export const setSearchResults = ({ search, context }) => ({
+  type: SET_SEARCH_RESULTS,
+  payload: search,
+  context,
+  meta: { feature: SEARCH },
+});

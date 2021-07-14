@@ -5,6 +5,17 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(handlebars|hbt)",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/x-handlebars-template"
+          }
+        ]
+      }
     ]
   }
 }
