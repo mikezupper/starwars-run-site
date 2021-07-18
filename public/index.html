@@ -13,7 +13,6 @@
     Web Development View Source Web Workers Redux Off the Main Thread No Build Tools">
   <script defer src="/sw-startup.js"></script>
   <script type="module" src="/components/Header.js"></script>
-  <script type="module" src="/components/Nav.js"></script>
   <script type="application/ld+json">
     {
     "@context": "http://www.schema.org",
@@ -24,7 +23,6 @@
     "nationality": "American",
     "gender": "Male",
     "Description": "Technologist, Problem Solver, Tinker, and Wannabe Golfer",
-    ,
     "url": "https://mikezupper.com",
     "address": {
       "@type": "PostalAddress",
@@ -38,26 +36,36 @@
       ]
     }
   </script>
+  <style>
+    section {
+      height: 100vh;
+    }
+  </style>
 </head>
 
 <body>
   <main>
-    <my-header></my-header>
-    <my-nav></my-nav>
-    <h3>Welcome to Star Wars Run!</h3>
-    <p>Click any link to search for your favorite star wars lore.</p>
-    <p>If you are curious as to how this page was built, view the source!</p>
-    <p>No build tools used to generate this content.</p>
-    <p>Redux is running off main thread via Web Worker. No Proxies!</p>
-    <p>If you have questions, follow me on twitter @mikezupper</p>
+    <section>
+      <div id="header"></div>
+      <div id="nav"></div>
+    </section>
+
+    <section>
+      <h3>Welcome to Star Wars Run!</h3>
+      <p>Click any link to search for your favorite star wars lore.</p>
+      <p>If you are curious as to how this page was built, view the source!</p>
+      <p>No build tools used to generate this content.</p>
+      <p>Redux is running off main thread via Web Worker. No Proxies!</p>
+      <p>If you have questions, follow me on twitter @mikezupper</p>
+    </section>
   </main>
-  <script src="/__/firebase/8.7.1/firebase-app.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-performance.js"></script>
-  <script src="/__/firebase/init.js?useEmulator=true"></script>
-  <script>
-    firebase.analytics();
-    firebase.performance();
+
+  <script type="module">
+    import { html, render } from '/scripts/htm.standalone.module.js';
+    import { Nav } from '/components/Nav.js';
+    import { Header } from '/components/Header.js';
+    render(html`<${Nav} />`, document.getElementById("nav"));
+    render(html`<${Header} />`, document.getElementById("header"));
   </script>
 </body>
 

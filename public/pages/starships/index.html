@@ -19,9 +19,9 @@
 
 <body>
   <main>
-    <my-header></my-header>
+    <div id="header"></div>
     <input class="input" id="search-input" type="text" placeholder="Search for a Starship" data-entity="starships">
-    <my-nav></my-nav>
+    <div id="nav"></div>
     <div id="list-result"></div>
   </main>
 </body>
@@ -30,6 +30,12 @@
   import { searchConfig } from '/boostrap/SearchConfig.js';
   import { html, render } from '/scripts/htm.standalone.module.js';
   import { SearchResultsHeader } from '/components/SearchResultsHeader.js';
+
+  import { Nav } from '/components/Nav.js';
+  import { Header } from '/components/Header.js';
+  render(html`<${Nav} />`, document.getElementById("nav"));
+  render(html`<${Header} />`, document.getElementById("header"));
+
   const name = "starships-search";
   const channel = new MessageChannel(name);
   channel.port1.onmessage = (e) => {
@@ -37,14 +43,6 @@
     render(html`<${SearchResultsHeader} payload="${payload}"/>`, document.getElementById("list-result"));
   };
   searchConfig(name, "na", document.getElementById("search-input"), channel.port2);
-</script>
-<script src="/__/firebase/8.7.1/firebase-app.js"></script>
-<script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
-<script src="/__/firebase/8.7.1/firebase-performance.js"></script>
-<script src="/__/firebase/init.js?useEmulator=true"></script>
-<script>
-  firebase.analytics();
-  firebase.performance();
 </script>
 
 </html>
