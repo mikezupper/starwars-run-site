@@ -1,68 +1,48 @@
-import * as myModule from "https://cdn.skypack.dev/pin/lit@v2.0.0-rc.2-TSkkpP2AxiJKOJvPcy1M/mode=imports/optimized/lit.js";
+import { html } from "/scripts/htm.standalone.module.js";
 
-export class Nav extends myModule.LitElement {
-  static get styles() {
-    return myModule.css`
- 
-    `;
-  }
+const links = [
+  {
+    entity: "people",
+    label: "People",
+  },
+  {
+    entity: "planets",
+    label: "Planets",
+  },
+  {
+    entity: "films",
+    label: "Films",
+  },
 
-  static get properties() {
-    return {
-      _active: { state: true },
-    };
-  }
+  {
+    entity: "species",
+    label: "Species",
+  },
 
-  constructor() {
-    super();
-    this.state = [
-      {
-        active: false,
-        entity: "people",
-        label: "People",
-      },
-      {
-        active: false,
-        entity: "planets",
-        label: "Planets",
-      },
-      {
-        active: true,
-        entity: "films",
-        label: "Films",
-      },
+  {
+    entity: "starships",
+    label: "Starships",
+  },
+  ,
+  {
+    entity: "vehicles",
+    label: "Vehicles",
+  },
+];
 
-      {
-        active: false,
-        entity: "species",
-        label: "Species",
-      },
+export const Nav = ({ active_label }) => {
+  const home_class = active_label == "home" ? "is-active" : " ";
+  return html`<ul class="tabs">
+    <li class="${home_class}">
+      <a href="/">Home</a>
+    </li>
+    ${links.map((link) => {
+      const { entity, label } = link;
+      const cssClass = active_label == entity ? "is-active" : "";
 
-      {
-        active: false,
-        entity: "starships",
-        label: "Starships",
-      },
-      ,
-      {
-        active: false,
-        entity: "vehicles",
-        label: "Vehicles",
-      },
-    ];
-  }
-
-  render() {
-    return myModule.html`
-    <ul>
-    <li><a href="/"><span>Home</span></a></li>
-    ${this.state.map((link) => {
-      return myModule.html`<li>
-        <a href="/pages/${link.entity}/index.html"><span>${link.label}</span></a>
+      return html`<li class="${cssClass}">
+        <a href="/pages/${entity}/index.html">${label}</a>
       </li>`;
     })}
-    </ul>`;
-  }
-}
-
-customElements.define("my-nav", Nav);
+  </ul>`;
+};

@@ -1,6 +1,12 @@
-const { tap, map, debounceTime, scan, filter, distinctUntilChanged } =
-  rxjs.operators;
-const { from } = rxjs;
+import { fromEvent } from "https://cdn.skypack.dev/rxjs";
+import {
+  tap,
+  map,
+  debounceTime,
+  scan,
+  filter,
+  distinctUntilChanged,
+} from "https://cdn.skypack.dev/rxjs/operators";
 
 export const searchConfig = (
   name,
@@ -20,7 +26,7 @@ export const searchConfig = (
     });
 
     //monitor the search input for neew events to fire off
-    var userSearchInput$ = rxjs.fromEvent(searchInputElement, "keyup").pipe(
+    var userSearchInput$ = fromEvent(searchInputElement, "keyup").pipe(
       map((e) => {
         return {
           searchTerm: e.target.value,
@@ -39,7 +45,6 @@ export const searchConfig = (
     //once worker processes event, respond to output event
     reduxWorker.onmessage = (e) => {
       const { payload } = e?.data;
-      console.log("channelPort", channelPort);
       channelPort.postMessage(payload);
     };
   }

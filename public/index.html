@@ -5,15 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Star Wars Run</title>
-
   <meta name="theme-color" content="#4285f4">
   <link rel="apple-touch-icon" href="/icons/my-icon-512x512.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="description" content="Explore all the starwars lore. Luke Skywalker, Darth Vader, Palpatine, Clone Wars, Force Awakens, Return of The Jedi
     Web Development View Source Web Workers Redux Off the Main Thread No Build Tools">
   <script defer src="/sw-startup.js"></script>
+  <link rel="preload" href="/css/bulma.min.css" as="style">
+  <link rel="stylesheet" href="/css/bulma.min.css">
   <script type="module" src="/components/Header.js"></script>
-  <script type="module" src="/components/Nav.js"></script>
   <script type="application/ld+json">
     {
     "@context": "http://www.schema.org",
@@ -24,7 +24,6 @@
     "nationality": "American",
     "gender": "Male",
     "Description": "Technologist, Problem Solver, Tinker, and Wannabe Golfer",
-    ,
     "url": "https://mikezupper.com",
     "address": {
       "@type": "PostalAddress",
@@ -42,15 +41,28 @@
 
 <body>
   <main>
-    <my-header></my-header>
-    <my-nav></my-nav>
-    <h3>Welcome to Star Wars Run!</h3>
-    <p>Click any link to search for your favorite star wars lore.</p>
-    <p>If you are curious as to how this page was built, view the source!</p>
-    <p>No build tools used to generate this content.</p>
-    <p>Redux is running off main thread via Web Worker. No Proxies!</p>
-    <p>If you have questions, follow me on twitter @mikezupper</p>
+    <section class="section">
+      <nav id="main-nav" class="navbar"></nav>
+      <div id="header"></div>
+      <div class="content">
+        <ul style="list-style-type:none">
+          <li>Click any link to search for your favorite star wars lore.</li>
+          <li>If you are curious as to how this page was built, view the source!</li>
+          <li>No build tools used to generate this content.</li>
+          <li>Redux is running off main thread via Web Worker. No Proxies!</li>
+          <li>If you have questions, follow me on twitter <a href="https://twitter.com/mikezupper">@mikezupper</a></li>
+        </ul>
+      </div>
+    </section>
   </main>
+
+  <script type="module">
+    import { html, render } from '/scripts/htm.standalone.module.js';
+    import { Nav } from '/components/Nav.js';
+    import { Header } from '/components/Header.js';
+    render(html`<${Nav} active_label="home"/>`, document.getElementById("main-nav"));
+    render(html`<${Header} />`, document.getElementById("header"));
+  </script>
   <script src="/__/firebase/8.7.1/firebase-app.js"></script>
   <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
   <script src="/__/firebase/8.7.1/firebase-performance.js"></script>
