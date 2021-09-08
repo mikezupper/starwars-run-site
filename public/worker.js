@@ -1,7 +1,6 @@
-import { fetchSearchResults } from "./redux/actions/search.js";
 import { store } from "./redux/store.js";
-
 onmessage = (event) => {
-  const { searchTerm, entity } = event.data;
-  store.dispatch(fetchSearchResults({ searchTerm, entity }));
+  console.log("worker got mess", event.data);
+  store.dispatch(event.data);
+  console.log("STORE.GEET",store.getState())
 };

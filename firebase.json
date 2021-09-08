@@ -8,20 +8,11 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(handlebars|hbt)",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/x-handlebars-template"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(html|js|css|png|xml|txt)",
+        "source": "**/*.@(html|js|css|png|xml|txt|ico)",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "public, max-age=7200"
+            "value": "public, max-age=604800"
           }
         ]
       }

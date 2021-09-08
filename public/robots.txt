@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /pages/*
 
+Disallow: /css/*
+Disallow: /redux/*
+Disallow: /icons/*
+Disallow: /components/*
+
 Sitemap: https://starwars.run/sitemap.xml

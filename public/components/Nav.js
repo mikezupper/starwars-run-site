@@ -31,18 +31,48 @@ const links = [
 ];
 
 export const Nav = ({ active_label }) => {
-  const home_class = active_label == "home" ? "is-active" : " ";
-  return html`<ul class="tabs">
-    <li class="${home_class}">
-      <a href="/">Home</a>
-    </li>
-    ${links.map((link) => {
-      const { entity, label } = link;
-      const cssClass = active_label == entity ? "is-active" : "";
+  let output = html` <nav
+    class="navbar"
+    role="navigation"
+    aria-label="main navigation"
+  >
+    <div class="navbar-brand" id="main-nav-burger">
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="main-nav-bar"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
 
-      return html`<li class="${cssClass}">
-        <a href="/pages/${entity}/index.html">${label}</a>
-      </li>`;
-    })}
-  </ul>`;
+    <div id="main-nav-links" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/"> Home </a>
+        ${links.map((link) => {
+          const { entity, label } = link;
+          return html`
+            <a class="navbar-item" href="/pages/${entity}/index.html"
+              >${label}</a
+            >
+          `;
+        })}
+      </div>
+    </div>
+  </nav>`;
+
+  return output;
+};
+
+export const NavActions = () => {
+  const bugerIcon = document.querySelector("#main-nav-burger");
+  const navBarMenu = document.querySelector("#main-nav-links");
+
+  bugerIcon.addEventListener("click", () => {
+    navBarMenu.classList.toggle("is-active");
+  });
 };

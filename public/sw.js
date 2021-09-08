@@ -1,4 +1,4 @@
-const cacheName = "sw-cache-v2";
+const cacheName = "sw-cache-v4";
 
 // Cache all the files to make a PWA
 self.addEventListener("install", (e) => {
@@ -6,7 +6,6 @@ self.addEventListener("install", (e) => {
     caches.open(cacheName).then((cache) => {
       return cache.addAll([
         "/",
-        "/sw.js",
         "/worker.js",
         "/index.html",
         "/manifest.json",
@@ -20,6 +19,7 @@ self.addEventListener("install", (e) => {
         "/components/Film.js",
         "/components/Header.js",
         "/components/Nav.js",
+        "/components/SearchConfig.js",
         "/components/SearchResultsHeader.js",
         "/scripts/htm.standalone.module.js",
         "/scripts/rxjs.umd.js",

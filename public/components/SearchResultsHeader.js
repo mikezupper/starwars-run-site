@@ -1,6 +1,10 @@
 import { html } from "/scripts/htm.standalone.module.js";
+import { fetchSearchResults } from "/redux/actions/search.js";
+import { setSearchContext } from "../redux/actions/search.context.js";
 
-export const SearchResultsHeader = ({ payload }) => {
+export const SearchResultsHeader = ({ model }) => {
+  const { payload } = model;
+  console.log("SearchResultsHeader pay", model);
   return html`
     <nav
       class="pagination  is-rounded"
@@ -9,21 +13,14 @@ export const SearchResultsHeader = ({ payload }) => {
     >
       ${payload.prev && html`<a class="pagination-previous">Previous</a>`}
       <span>Search for "${payload.searchTerm}" found: ${payload.count} </span>
-      ${payload.next && html`<a class="pagination-next">Next</a>`}
-    </nav>
-    <nav
-      class="pagination  is-rounded"
-      role="search-results"
-      aria-label="search-results"
-    >
-      <ul>
-        ${payload.results.map((item) => {
-          return html`<li>
-            ${item.name && html`${item.name}`}
-            ${item.title && html`${item.title}`}
-          </li>`;
-        })}
-      </ul>
+      ${payload.next &&
+      html`<a
+        class="pagination-next"
+        id="pagination-next"
+        data-page="2"
+        onClick=${model.paginationHandler}
+        >Next</a
+      >`}
     </nav>
   `;
 };

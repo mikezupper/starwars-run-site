@@ -25,41 +25,139 @@
       <nav id="main-nav" class="navbar"></nav>
       <div id="header"></div>
       <div class="content">
-        <input class="input" id="search-input" type="text" placeholder="Search for a Person" data-entity="people">
+        <input class="input" id="search-input" type="text" placeholder="Search for a Person" data-entity="people"
+          data-page="1" data-search-term="a">
       </div>
       <div class="content">
+        <div id="header-result"></div>
         <div id="list-result"></div>
       </div>
     </section>
   </main>
+  <script src="https://unpkg.com/xstate@4/dist/xstate.js" type="module"></script>
 
   <script type="module">
 
-    import { searchConfig } from '/boostrap/SearchConfig.js';
+    import { searchConfig } from '/components/SearchConfig.js';
     import { html, render } from '/scripts/htm.standalone.module.js';
     import { SearchResultsHeader } from '/components/SearchResultsHeader.js';
+    import { SearchResultsContent } from '/components/SearchResultsContent.js';
+    import { fetchSearchResults } from '/redux/actions/search.js';
+    import { fromEvent, from, combineLatest } from "https://cdn.skypack.dev/rxjs";
+    import {
+      tap,
+      map,
+      debounceTime,
+      scan,
+      filter,
+      distinctUntilChanged,
+    } from "https://cdn.skypack.dev/rxjs/operators";
+    console.log(window.XState);
 
-    import { Nav } from '/components/Nav.js';
+    import { Nav, NavActions } from '/components/Nav.js';
     import { Header } from '/components/Header.js';
-    render(html`<${Nav} active_label="people"/>`, document.getElementById("main-nav"));
-    render(html`<${Header} />`, document.getElementById("header"));
 
-    const name = "people-search";
-    const channel = new MessageChannel(name);
-    channel.port1.onmessage = (e) => {
-      const payload = e?.data;
-      render(html`<${SearchResultsHeader} payload="${payload}"/>`, document.getElementById("list-result"));
-    };
-    searchConfig(name, "a", document.getElementById("search-input"), channel.port2);
-   
-  </script>
-  <script src="/__/firebase/8.7.1/firebase-app.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-performance.js"></script>
-  <script src="/__/firebase/init.js?useEmulator=true"></script>
-  <script>
-    firebase.analytics();
-    firebase.performance();
+    render(html`<${Nav} active_label="home"/>`, document.getElementById("main-nav"));
+    render(html`<${Header} />`, document.getElementById("header"));
+    NavActions();
+
+    if (window.Worker) {
+      const search_worker = new Worker("/worker.js", { type: "module", name: "search-worker" });
+      let userInputSubscription;
+      let searchPaginationInput$
+      let combinedInput$;
+
+      const inputEle = document.getElementById("search-input")
+      const { entity, page, searchTerm } = inputEle.dataset;
+      console.log("seach teerm", searchTerm);
+      search_worker.postMessage(
+        fetchSearchResults({
+          searchTerm,
+          entity,
+          page,
+        })
+      );
+
+
+      var searchWorkerOutput$ = fromEvent(search_worker, "message").pipe(
+        map(worker_event => {
+          return worker_event.data;
+        }),
+        tap((json) => console.log("worker output event streem", json))
+      );
+
+      searchWorkerOutput$.subscribe((data) => console.log(data));
+
+      //monitor the search input for new events to fire off
+      //inputEle.addEventListener("keyup", (e) => console.log(e));
+      var userSearchInput$ = fromEvent(inputEle, "keyup").pipe(
+        map((e) => {
+          console.log("search in pt ", e)
+          const searchTerm = e.target.value;
+          inputEle.setAttribute("data-search-term", searchTerm);
+          const evt = fetchSearchResults({
+            searchTerm,
+            entity,
+            page
+          });
+
+          return evt;
+        }),
+        debounceTime(750),
+        map(json => json.searchTerm),
+        filter((searchTerm) => searchTerm.length > 2),
+        distinctUntilChanged()
+      );
+
+      const model = {
+        paginationHandler: (e) => {
+          var searchPaginationInput$ = from([e])
+            .pipe(
+              map(page_event => page_event.target.dataset.page),
+            );
+
+          combinedInput$ = combineLatest([userSearchInput$, searchPaginationInput$]);
+
+        combinedInput$.subscribe(data => console.log("combined post message", JSON.stringify(data)));
+
+        }
+      };
+      //script the HTML output
+      //once worker processes event, respond to output event
+      search_worker.onmessage = (e) => {
+        const { payload } = e?.data;
+        const new_model = { ...model, payload: { ...payload } }
+        if (searchPaginationInput$)
+          combinedInput$ = combineLatest([userSearchInput$, searchPaginationInput$]);
+        else
+          combinedInput$ = userSearchInput$;
+
+        combinedInput$.subscribe(data => console.log("combined post message", JSON.stringify(data)));
+
+        render(html`<${SearchResultsHeader} model="${new_model}"/>`, document.getElementById("header-result"));
+        render(html`<${SearchResultsContent} model="${new_model}"/>`, document.getElementById("list-result"));
+      };
+
+      combinedInput$.subscribe(data => console.log("combined ", JSON.stringify(data)));
+
+      // const name = "people-search";
+      // const channel = new MessageChannel(name);
+      // channel.port1.onmessage = (e) => {
+      //   const model = {
+      //     paginationHandler: (page, state) => {
+      //       const msg = fetchSearchResults({ ...state, page });
+      //       console.log("msg", msg);
+      //       //channel.port2.postMessage(msg);
+      //     },
+      //     payload: e?.data
+      //   };
+      //   const payload = e?.data;
+      //   render(html`<${SearchResultsHeader} model="${model}"/>`, document.getElementById("header-result"));
+      //   render(html`<${SearchResultsContent} model="${model}"/>`, document.getElementById("list-result"));
+      // };
+
+      // searchConfig(name, "a", document.getElementById("search-input"), channel.port2);
+    }
   </script>
 </body>
 

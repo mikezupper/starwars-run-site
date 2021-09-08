@@ -6,17 +6,20 @@ import {
   setSearchResults,
 } from "../../actions/search.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
+import { setSearchContext } from "../../actions/search.context.js";
 
 export const searchMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
     case FETCH_SEARCH_RESULTS:
-      let { searchTerm, entity } = action?.payload;
+      let { searchTerm, entity, page } = action?.payload;
       //TODO: need to externalize some prpoerites
       let url = new URL(`https://api.starwars.run/api/${entity}/`);
       url.searchParams.set("search", searchTerm);
+      url.searchParams.set("page", page);
 
       next([
+        setSearchContext({ context: { ...action?.payload } }),
         apiRequest({
           method: "GET",
           url,
