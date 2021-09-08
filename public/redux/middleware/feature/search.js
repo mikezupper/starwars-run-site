@@ -7,14 +7,17 @@ import {
 } from "../../actions/search.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
 
+const extractPageRegEx = new RegExp("(.*page=)");
+
 export const searchMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
     case FETCH_SEARCH_RESULTS:
-      let { searchTerm, entity } = action?.payload;
+      let { searchTerm, entity, page } = action?.payload;
       //TODO: need to externalize some prpoerites
       let url = new URL(`https://api.starwars.run/api/${entity}/`);
       url.searchParams.set("search", searchTerm);
+      if (page) url.searchParams.set("page", page);
 
       next([
         apiRequest({
@@ -30,8 +33,21 @@ export const searchMiddleware = () => (next) => (action) => {
       break;
 
     case `${SEARCH} ${API_SUCCESS}`:
+      const payload = { ...action.payload };
+      let next_value = payload.next
+        ? payload.next.replace(extractPageRegEx, "")
+        : undefined;
+      let previous_value = payload.previous
+        ? payload.previous.replace(extractPageRegEx, "")
+        : undefined;
+      const new_payload = {
+        ...payload,
+        next: next_value,
+        previous: previous_value,
+      };
+      console.log("new+pay", new_payload);
       next([
-        setSearchResults({ search: action.payload, context: action.context }),
+        setSearchResults({ search: new_payload, context: action.context }),
       ]);
       break;
 

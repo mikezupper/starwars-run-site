@@ -1,15 +1,12 @@
 import { html, render } from "/scripts/htm.standalone.module.js";
 
-export const SearchResultContent = ({ payload }) => {
+export const SearchResultsContent = ({ payload }) => {
   return html`
     <nav
       class="pagination  is-rounded"
-      role="navigation"
-      aria-label="pagination"
+      role="search-results"
+      aria-label="search-results"
     >
-      ${payload.next && html`<a class="pagination-next">Next</a>`}
-      <span>Search for "${payload.searchTerm}" found: ${payload.count} </span>
-      ${payload.prev && html`<a class="pagination-previous">Previous</a>`}
       <ul>
         ${payload.results.map((item) => {
           return html`<li>

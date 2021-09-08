@@ -5,12 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Star Wars Run</title>
-  <meta name="theme-color" content="#4285f4">
-  <link rel="apple-touch-icon" href="/icons/my-icon-512x512.png">
-  <link rel="manifest" href="/manifest.json">
   <meta name="description" content="Explore all the starwars lore. Luke Skywalker, Darth Vader, Palpatine, Clone Wars, Force Awakens, Return of The Jedi
     Web Development View Source Web Workers Redux Off the Main Thread No Build Tools">
-  <script defer src="/sw-startup.js"></script>
   <link rel="preload" href="/css/bulma.min.css" as="style">
   <link rel="stylesheet" href="/css/bulma.min.css">
   <script type="module" src="/components/Header.js"></script>
@@ -62,14 +58,6 @@
     import { Header } from '/components/Header.js';
     render(html`<${Nav} active_label="home"/>`, document.getElementById("main-nav"));
     render(html`<${Header} />`, document.getElementById("header"));
-  </script>
-  <script src="/__/firebase/8.7.1/firebase-app.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-analytics.js"></script>
-  <script src="/__/firebase/8.7.1/firebase-performance.js"></script>
-  <script src="/__/firebase/init.js?useEmulator=true"></script>
-  <script>
-    firebase.analytics();
-    firebase.performance();
   </script>
 </body>
 

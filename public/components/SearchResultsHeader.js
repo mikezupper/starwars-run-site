@@ -1,29 +1,25 @@
 import { html } from "/scripts/htm.standalone.module.js";
 
-export const SearchResultsHeader = ({ payload }) => {
+export const SearchResultsHeader = ({ payload, paginationHandler }) => {
+  const disabledPrevious = payload.previous ? "disabled" : "";
+  const disabledNext = payload.next ? "disabled" : "";
+  console.log("header", disabledNext, disabledPrevious);
   return html`
-    <nav
-      class="pagination  is-rounded"
-      role="navigation"
-      aria-label="pagination"
-    >
-      ${payload.prev && html`<a class="pagination-previous">Previous</a>`}
+    <nav class="block" role="navigation" aria-label="pagination">
       <span>Search for "${payload.searchTerm}" found: ${payload.count} </span>
-      ${payload.next && html`<a class="pagination-next">Next</a>`}
-    </nav>
-    <nav
-      class="pagination  is-rounded"
-      role="search-results"
-      aria-label="search-results"
-    >
-      <ul>
-        ${payload.results.map((item) => {
-          return html`<li>
-            ${item.name && html`${item.name}`}
-            ${item.title && html`${item.title}`}
-          </li>`;
-        })}
-      </ul>
+
+      <a
+        class="pagination-link"
+        onclick=${paginationHandler}
+        data-page="${payload.previous}"
+        >Previous</a
+      >
+      <a
+        class="pagination-link"
+        onclick=${paginationHandler}
+        data-page="${payload.next}"
+        >Next</a
+      >
     </nav>
   `;
 };
