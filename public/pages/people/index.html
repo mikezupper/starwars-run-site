@@ -82,7 +82,7 @@
       });
 
       //publish a default search action to worker
-      const evt = fetchSearchResults({ searchTerm: "a", entity, page: 1 });
+      const evt = fetchSearchResults({ searchTerm: searchTermInput.dataset.searchTerm, entity, page: 1 });
       search_worker.postMessage(evt);
 
       var searchResultWorkerOutput$ = fromEvent(search_worker, "message").pipe(
@@ -95,7 +95,7 @@
         const paginationHandler = (e) => {
           const { page } = e.target.dataset;
           //publish a default message
-          const evt = fetchSearchResults({ searchTerm: "a", entity: "people", page });
+          const evt = fetchSearchResults({ searchTerm: searchTermInput.dataset.searchTerm, entity, page });
           search_worker.postMessage(evt);
         };
         render(html`<${SearchResultsHeader} payload="${payload}" paginationHandler="${paginationHandler}"/>`, document.getElementById("search-header"));
