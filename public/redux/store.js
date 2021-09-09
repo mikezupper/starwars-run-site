@@ -21,7 +21,7 @@ const coreMiddleware = [
   actionSplitterMiddleware,
   apiMiddleware,
   normalizeMiddleware,
-  loggerMiddleware,
+  //loggerMiddleware,
 ];
 
 // compose the middleware with additional (optional) enhancers,

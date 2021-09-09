@@ -32,7 +32,6 @@ export const searchMiddleware = () => (next) => (action) => {
       break;
 
     case `${SEARCH} ${API_SUCCESS}`:
-      console.log("search midll",action)
       next([
         setSearchResults({
           search: action.payload,

@@ -11,7 +11,7 @@ export const normalizeMiddleware =
     if (action.type.includes("SET") && action.meta.normalizeKey) {
       // notify about the transformation
       dispatch(dataNormalized({ feature: action.meta.feature }));
-      console.log("normal", action);
+
       // transform the data structure
       const payload = { ...action.payload, ...action.context };
       let next_value = payload.next
