@@ -11,9 +11,8 @@ export const fetchSearchResults = ({ searchTerm, entity, page }) => ({
   payload: { searchTerm, entity, page },
 });
 
-export const setSearchResults = ({ search, context }) => ({
+export const setSearchResults = ({ search, context, normalizeKey }) => ({
   type: SET_SEARCH_RESULTS,
   payload: search,
-  context,
-  meta: { feature: SEARCH },
+  meta: { feature: SEARCH, context, normalizeKey },
 });

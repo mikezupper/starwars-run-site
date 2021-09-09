@@ -7,8 +7,6 @@ import {
 } from "../../actions/search.js";
 import { API_ERROR, API_SUCCESS, apiRequest } from "../../actions/api.js";
 
-const extractPageRegEx = new RegExp("(.*page=)");
-
 export const searchMiddleware = () => (next) => (action) => {
   next(action);
   switch (action.type) {
@@ -27,26 +25,20 @@ export const searchMiddleware = () => (next) => (action) => {
           context: {
             entity,
             searchTerm,
+            page
           },
         }),
       ]);
       break;
 
     case `${SEARCH} ${API_SUCCESS}`:
-      const payload = { ...action.payload };
-      let next_value = payload.next
-        ? payload.next.replace(extractPageRegEx, "")
-        : undefined;
-      let previous_value = payload.previous
-        ? payload.previous.replace(extractPageRegEx, "")
-        : undefined;
-      const new_payload = {
-        ...payload,
-        next: next_value,
-        previous: previous_value,
-      };
+      console.log("search midll",action)
       next([
-        setSearchResults({ search: new_payload, context: action.context }),
+        setSearchResults({
+          search: action.payload,
+          context: action.context,
+          normalizeKey: "url",
+        }),
       ]);
       break;
 

@@ -14,7 +14,7 @@ export const SearchResultsHeader = ({ payload, paginationHandler }) => {
         Previous
       </button>
       <span class="p-4 m-4"
-        >Search for "${payload.searchTerm}" found: ${payload.count}
+        >Search for "${payload.context.searchTerm}" found: ${payload.count}
       </span>
 
       <button
