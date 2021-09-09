@@ -1,25 +1,29 @@
 import { html } from "/scripts/htm.standalone.module.js";
 
 export const SearchResultsHeader = ({ payload, paginationHandler }) => {
-  const disabledPrevious = payload.previous ? "disabled" : "";
-  const disabledNext = payload.next ? "disabled" : "";
-  console.log("header", disabledNext, disabledPrevious);
+  const disabledPrevious =
+    payload.previous == undefined ? "disabled" : undefined;
+  const disabledNext = payload.next == undefined ? "disabled" : undefined;
   return html`
-    <nav class="block" role="navigation" aria-label="pagination">
-      <span>Search for "${payload.searchTerm}" found: ${payload.count} </span>
-
-      <a
-        class="pagination-link"
+    <nav role="navigation" aria-label="pagination">
+      <button
+        class="button is-link is-light is-small is-outlined"
         onclick=${paginationHandler}
         data-page="${payload.previous}"
-        >Previous</a
       >
-      <a
-        class="pagination-link"
+        Previous
+      </button>
+      <span class="p-4 m-4"
+        >Search for "${payload.searchTerm}" found: ${payload.count}
+      </span>
+
+      <button
+        class="button is-link is-light is-small is-outlined"
         onclick=${paginationHandler}
         data-page="${payload.next}"
-        >Next</a
       >
+        Next
+      </button>
     </nav>
   `;
 };

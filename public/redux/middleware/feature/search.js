@@ -45,7 +45,6 @@ export const searchMiddleware = () => (next) => (action) => {
         next: next_value,
         previous: previous_value,
       };
-      console.log("new+pay", new_payload);
       next([
         setSearchResults({ search: new_payload, context: action.context }),
       ]);
